@@ -176,7 +176,7 @@
 </head>
 <body>
 <div class="header">
-    <img src="https://www.driven.com.br/wp-content/uploads/2021/07/logo-chat.png" alt="Logo" class="logo">
+    <img src="UOL.png" alt="Logo" class="logo">
     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E" alt="People" class="people-icon" onclick="toggleSidebar()">
 </div>
 
@@ -187,7 +187,7 @@
         <input type="text" placeholder="Escreva aqui..." id="message-input">
         <div class="recipient-info" id="recipient-info">Enviando para Todos (Público)</div>
     </div>
-    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='22' y1='2' x2='11' y2='13'/%3E%3Cpolygon points='22 2 15 22 11 13 2 9 22 2'/%3E%3C/svg%3E" alt="Send" class="send-button" onclick="sendMessage()">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='22' y1='2' x2='11' y2='13'/%3E%3Cpolygon points='22 2 15 22 11 13 2 9 22 2'/%3E%3C/svg%3E" alt="Send" class="send-button" onclick="mandarMsg()">
 </div>
 
 <div class="overlay" onclick="toggleSidebar()"></div>
@@ -198,12 +198,12 @@
 
     <div class="sidebar-header">Escolha a visibilidade:</div>
     <div class="visibility-list">
-        <div class="visibility-item" onclick="selectVisibility(this, 'message')">
+        <div class="visibility-item" onclick="selecVisivel(this, 'message')">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E" alt="Public">
             <span>Público</span>
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E" alt="Check" class="check-icon">
         </div>
-        <div class="visibility-item" onclick="selectVisibility(this, 'private_message')">
+        <div class="visibility-item" onclick="selecVisivel(this, 'private_message')">
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='11' width='18' height='11' rx='2' ry='2'/%3E%3Cpath d='M7 11V7a5 5 0 0 1 10 0v4'/%3E%3C/svg%3E" alt="Private">
             <span>Reservadamente</span>
             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E" alt="Check" class="check-icon">
@@ -212,24 +212,24 @@
 </div>
 
 <script>
-    let username;
-    let selectedParticipant = 'Todos';
-    let messageType = 'message';
+    let nome_usuario;
+    let participanteSelecionado = 'Todos';
+    let TipoMensagem = 'message';
     const UUID = '756849d7-bb0d-4cc8-9531-d23c44be000c\n' +
-        '\n'; // Replace with your UUID generation logic
+        '\n';
 
     const API_BASE_URL = 'https://mock-api.driven.com.br/api/v6/uol';
 
     function login() {
-        username = prompt('Digite seu nome:');
-        if (!username) {
+        nome_usuario = prompt('Digite seu nome:');
+        if (!nome_usuario) {
             login();
             return;
         }
 
-        axios.post(`${API_BASE_URL}/participants/${UUID}`, { name: username })
+        axios.post(`${API_BASE_URL}/participants/${UUID}`, { name: nome_usuario })
             .then(() => {
-                startChat();
+                comecaConversa();
             })
             .catch(() => {
                 alert('Nome já está em uso. Por favor, escolha outro.');
@@ -237,33 +237,33 @@
             });
     }
 
-    function startChat() {
-        setInterval(keepAlive, 5000);
-        setInterval(getMessages, 3000);
-        setInterval(getParticipants, 10000);
-        getMessages();
-        getParticipants();
+    function comecaConversa() {
+        setInterval(manterVivo, 5000);
+        setInterval(pegaMensagem, 3000);
+        setInterval(pegaParticipante, 10000);
+        pegaMensagem();
+        pegaParticipante();
     }
 
-    function keepAlive() {
-        axios.post(`${API_BASE_URL}/status/${UUID}`, { name: username })
+    function manterVivo() {
+        axios.post(`${API_BASE_URL}/status/${UUID}`, { name: nome_usuario })
             .catch(() => window.location.reload());
     }
 
-    function getMessages() {
+    function pegaMensagem() {
         axios.get(`${API_BASE_URL}/messages/${UUID}`)
             .then(response => {
-                displayMessages(response.data);
+                atualizarMsg(response.data);
             });
     }
 
-    function displayMessages(messages) {
+    function atualizarMsg(messages) {
         const chat = document.getElementById('chat');
         chat.innerHTML = '';
 
         messages.forEach(message => {
-            if (shouldDisplayMessage(message)) {
-                const messageElement = createMessageElement(message);
+            if (deveMostrarMsg(message)) {
+                const messageElement = criarMensagem(message);
                 chat.appendChild(messageElement);
             }
         });
@@ -274,14 +274,14 @@
         }
     }
 
-    function shouldDisplayMessage(message) {
+    function deveMostrarMsg(message) {
         if (message.type === 'private_message') {
-            return message.to === username || message.from === username;
+            return message.to === nome_usuario || message.from === nome_usuario;
         }
         return true;
     }
 
-    function createMessageElement(message) {
+    function criarMensagem(message) {
         const div = document.createElement('div');
         div.classList.add('message');
 
@@ -301,28 +301,28 @@
         return div;
     }
 
-    function sendMessage() {
+    function mandarMsg() {
         const input = document.getElementById('message-input');
         const text = input.value.trim();
 
         if (!text) return;
 
         const message = {
-            from: username,
-            to: selectedParticipant,
+            from: nome_usuario,
+            to: participanteSelecionado,
             text: text,
-            type: messageType
+            type: TipoMensagem
         };
 
         axios.post(`${API_BASE_URL}/messages/${UUID}`, message)
             .then(() => {
                 input.value = '';
-                getMessages();
+                pegaMensagem();
             })
             .catch(() => window.location.reload());
     }
 
-    function getParticipants() {
+    function pegaParticipante() {
         axios.get(`${API_BASE_URL}/participants/${UUID}`)
             .then(response => {
                 displayParticipants(response.data);
@@ -332,7 +332,7 @@
     function displayParticipants(participants) {
         const list = document.getElementById('participants-list');
         list.innerHTML = `
-                <div class="participant-item ${selectedParticipant === 'Todos' ? 'selected' : ''}" onclick="selectParticipant(this, 'Todos')">
+                <div class="participant-item ${participanteSelecionado === 'Todos' ? 'selected' : ''}" onclick="selecParticipante(this, 'Todos')">
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E" alt="All">
                     <span>Todos</span>
                     <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E" alt="Check" class="check-icon">
@@ -340,9 +340,9 @@
             `;
 
         participants.forEach(participant => {
-            if (participant.name !== username) {
+            if (participant.name !== nome_usuario) {
                 list.innerHTML += `
-                        <div class="participant-item ${selectedParticipant === participant.name ? 'selected' : ''}" onclick="selectParticipant(this, '${participant.name}')">
+                        <div class="participant-item ${participanteSelecionado === participant.name ? 'selected' : ''}" onclick="selecParticipante(this, '${participant.name}')">
                             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E" alt="User">
                             <span>${participant.name}</span>
                             <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E" alt="Check" class="check-icon">
@@ -352,24 +352,24 @@
         });
     }
 
-    function selectParticipant(element, participant) {
+    function selecParticipante(element, participant) {
         document.querySelectorAll('.participant-item').forEach(item => item.classList.remove('selected'));
         element.classList.add('selected');
-        selectedParticipant = participant;
-        updateRecipientInfo();
+        participanteSelecionado = participant;
+        updateInfo();
     }
 
-    function selectVisibility(element, type) {
+    function selecVisivel(element, type) {
         document.querySelectorAll('.visibility-item').forEach(item => item.classList.remove('selected'));
         element.classList.add('selected');
-        messageType = type;
-        updateRecipientInfo();
+        TipoMensagem = type;
+        updateInfo();
     }
 
-    function updateRecipientInfo() {
-        const visibilityText = messageType === 'message' ? 'Público' : 'Reservadamente';
+    function updateInfo() {
+        const visibilityText = TipoMensagem === 'message' ? 'Público' : 'Reservadamente';
         document.getElementById('recipient-info').textContent =
-            `Enviando para ${selectedParticipant} (${visibilityText})`;
+            `Enviando para ${participanteSelecionado} (${visibilityText})`;
     }
 
     function toggleSidebar() {
@@ -377,14 +377,12 @@
         document.querySelector('.overlay').classList.toggle('active');
     }
 
-    // Enter key to send message
     document.getElementById('message-input').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
-            sendMessage();
+            mandarMsg();
         }
     });
 
-    // Start the chat
     login();
 </script>
 </body>
